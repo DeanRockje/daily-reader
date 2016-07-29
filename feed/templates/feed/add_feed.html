@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+
+{% block list %}
+
+<form method="POST" class = "add_post">
+    {%csrf_token%}
+    {{form}}
+    <a href = "{% url 'add_category' %}">add category</a>
+    <button class = "submit" type="submit">Add</button>
+</form>
+{% endblock %}

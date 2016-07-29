@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block list %}
+
+<div class = "category">
+    <h1>Category list</h1>
+
+    <ul>
+        {% for item in category_list %}
+        <li>
+            <a href = "{% url 'feed_list' pk=item.pk %}" >
+                {{item.category_title}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

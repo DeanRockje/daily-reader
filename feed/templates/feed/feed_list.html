@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block list %}
+<div class = "feed_list">
+    <h1>Feeds by category</h1>
+    <ul>
+    {% for item in feed %}
+    <li><a href = "{% url 'entry_list' pk=item.pk %}">{{ item.title }}{{unread}}</a></li>
+    {% endfor %}
+</ul>
+</div>
+
+{% endblock %}

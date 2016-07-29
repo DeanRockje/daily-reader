@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block list %}
+<div class = "feed_list">
+    {% autoescape  on%}
+    <ul>
+    {% for item in entry %}
+    <li>
+        <div class = 'item'>
+        <a href = "{{item.link}}">{{item.title}}</a><span>{{item.publication_date|timesince}}</span>
+        {{item.content|safe}}
+            <p>{{item.was_read}}</p>
+
+    </div>
+
+    </li>
+
+    {% endfor %}
+</ul>
+        {% endautoescape %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed_Aggregator(v0.1)</title>
+</head>
+<body>
+
+
+{% if user.is_authenticated %}
+{% block list %}
+{% endblock %}
+<p><a href = "{% url 'add_feed' %}">Add new feed</a></p>
+<p><a href="{%url 'logout' %}">Logout</a></p>
+{% else %}
+{% block registration %}
+{%endblock %}
+{% endif %}
+</body>
+</html>
