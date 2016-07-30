@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Feed,Entry
 from .forms import AddFeed, CreateCategory
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -47,3 +48,4 @@ def create_category(request):
     else:
         form = CreateCategory()
     return render(request, 'feed/add_category.html', {'form':form})
+

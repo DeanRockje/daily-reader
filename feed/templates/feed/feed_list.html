@@ -5,7 +5,7 @@
     <h1>Feeds by category</h1>
     <ul>
     {% for item in feed %}
-    <li><a href = "{% url 'entry_list' pk=item.pk %}">{{ item.title }}{{unread}}</a></li>
+    <li><a href = "{% url 'entry_list' pk=item.pk %}">{{ item.title }}</a><p>Unread articles: {{item.get_unread_entry_count}}</p></li>
     {% endfor %}
 </ul>
 </div>
