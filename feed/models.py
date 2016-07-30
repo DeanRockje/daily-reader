@@ -47,6 +47,9 @@ class Feed(models.Model):
                               update_time=build)
                 entry.save()
 
+    def get_unread_entry_count(self):
+        return Entry.objects.filter(feed = self, was_read=False).count()
+
     def save(self, *args, **kwargs):
         parser = feedparser.parse(self.url)
         if not self.title:
@@ -77,7 +80,7 @@ class Entry(models.Model):
 
     def set_read(self):
         self.was_read=True
-        Entry.save()
+
 
     def __str__(self):
         return " %s " % self.title
