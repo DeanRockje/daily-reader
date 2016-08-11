@@ -14,15 +14,18 @@ def category_index(request):
     category_list = user.category_set.all()
     return render(request, 'feed/category.html', {'category_list':category_list})
 
+
 @login_required
 def feed_list(request,pk):
     feeds = Feed.objects.filter(category__id = pk).order_by('-adding_date')
     return render(request,'feed/feed_list.html', {'feed':feeds})
 
+
 @login_required
 def entry_list(request,pk):
     entries = Entry.objects.filter(feed__id=pk).order_by('-publication_date')
     return render(request,'feed/feed_items.html',{'entry':entries})
+
 
 @login_required
 def add_feed(request):
