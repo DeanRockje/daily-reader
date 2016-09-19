@@ -4,6 +4,7 @@ from django.utils import timezone
 import feedparser
 import datetime
 from time import mktime
+from django.utils.timezone import make_aware
 
 # Create your models here.
 
@@ -25,7 +26,7 @@ class Feed(models.Model):
     title = models.CharField(max_length=100,blank=True)
     publication_date = models.DateTimeField(blank=True, null=True)
     build_date = models.DateTimeField(blank=True, null=True)
-    category = models.ForeignKey(Category,on_delete=models.CASCADE, default = 'no category')
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, default = 'no category', related_name='feeds')
 
     def get_entry_data(self):
         data = feedparser.parse(self.url)
@@ -34,7 +35,9 @@ class Feed(models.Model):
             url = entry.link
             title = entry.title
             pub_date = datetime.datetime.fromtimestamp(mktime(entry.published_parsed))
+            make_aware(pub_date,timezone.get_current_timezone())
             build = datetime.datetime.fromtimestamp(mktime(entry.updated_parsed))
+            make_aware(build, timezone.get_current_timezone())
             if not hasattr(entry, 'content'):
                 content = entry.description
             else:
@@ -58,10 +61,12 @@ class Feed(models.Model):
                 self.publication_date = timezone.now()
             else:
                 self.publication_date = datetime.datetime.fromtimestamp(mktime(parser.feed.published_parsed))
+                make_aware(self.publication_date, timezone.get_current_timezone())
             if not hasattr(parser.feed, 'updated_parsed') or not parser.feed.updated_parsed:
                 self.build_date = timezone.now()
             else:
                 self.build_date = datetime.datetime.fromtimestamp(mktime(parser.feed.updated_parsed))
+                make_aware(self.build_date, timezone.get_current_timezone())
             super(Feed, self).save(*args, **kwargs)
             self.get_entry_data()
 
@@ -70,7 +75,7 @@ class Feed(models.Model):
 
 
 class Entry(models.Model):
-    feed = models.ForeignKey(Feed, on_delete=models.CASCADE)
+    feed = models.ForeignKey(Feed, on_delete=models.CASCADE, related_name='entries')
     link = models.URLField(max_length=100,blank=True, default='', null=True)
     title = models.CharField(max_length=100,blank=True,null=True)
     content = models.TextField(null=True,blank=True)

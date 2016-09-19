@@ -17,11 +17,12 @@ def sign_in(request):
             if user is not None:
                 if user.is_active:
                     login(request,user)
-                    return HttpResponseRedirect('/category/')
+                    return HttpResponseRedirect('/digest/')
                 else:
-                    return HttpResponseRedirect('Account disabled')
+                    return render(request, 'users/authentication.html', {'form': form})
             else:
-                return HttpResponse('Invalid login')
+                return render(request, 'users/authentication.html', {'form': form})
+
     else:
         form = LoginForm()
     return render(request, 'users/authentication.html', {'form':form})
@@ -35,7 +36,7 @@ def RegisterNewUser(request):
         email = request.POST.get('email')
         if form.is_valid:
             user = User.objects.create_user(username=username, password=password, email=email)
-            return HttpResponseRedirect('/users/login/')
+            return HttpResponseRedirect('/login/')
         else:
             return HttpResponse('Invalid login or password')
     else:
@@ -45,4 +46,4 @@ def RegisterNewUser(request):
 
 def log_out(request):
     logout(request)
-    return HttpResponseRedirect('/users/')
+    return HttpResponseRedirect('/login/')
